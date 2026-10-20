@@ -1,0 +1,55 @@
+    Finished `release` profile [optimized] target(s) in 0.26s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.02s
+     Running unittests src/lib.rs (solution/target/debug/deps/fair_switch-25c079fa590b3606)
+
+running 7 tests
+test tests::initial_setup_fits_the_host_output_limit ... ok
+test tests::prefix_matching_handles_zero_and_host_prefixes ... ok
+test tests::route_updates_delete_the_old_entry_before_installing ... ok
+test tests::paths_are_simple_and_stay_within_the_detour_limit ... ok
+test tests::chooses_capacity_and_waits_before_activating_the_new_path ... ok
+test tests::obsolete_path_is_kept_for_drain_time_then_removed ... ok
+test tests::small_customer_takes_its_demand_before_bulk_shares_the_rest ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests fair_switch
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+    Finished `release` profile [optimized] target(s) in 0.01s
+a2p1-dumb-004-x0.5        PASS  worst share 76.8%
+a2p1-dumb-004-x0.75       PASS  worst share 86.6%
+a2p1-dumb-004-x1          PASS  worst share 86.6%
+a2p1-dumb-004-x1.25       PASS  worst share 86.6%
+a2p1-dumb-004-x1.5        PASS  worst share 86.7%
+a2p1-dumb-004-x2          PASS  worst share 86.7%
+a2p1-grid-009-x0.5        PASS  worst share 54.9%
+a2p1-grid-009-x0.75       PASS  worst share 95.3%
+a2p1-grid-009-x1          PASS  worst share 63.5%
+a2p1-grid-009-x1.25       PASS  worst share 63.6%
+a2p1-grid-009-x1.5        PASS  worst share 61.7%
+a2p1-grid-009-x2          PASS  worst share 78.1%
+a2p1-ring-020-x0.5        PASS  worst share 94.3%
+a2p1-ring-020-x0.75       PASS  worst share 93.5%
+a2p1-ring-020-x1          PASS  worst share 93.4%
+a2p1-ring-020-x1.25       PASS  worst share 92.8%
+a2p1-ring-020-x1.5        PASS  worst share 92.8%
+a2p1-ring-020-x2          PASS  worst share 91.8%
+a2p2-dumb-003-x0.5        PASS  worst share 71.3%
+a2p2-dumb-003-x0.75       PASS  worst share 46.3%
+a2p2-dumb-003-x1          PASS  worst share 68.9%
+a2p2-dumb-003-x1.25       PASS  worst share 67.7%
+a2p2-dumb-003-x1.5        PASS  worst share 65.7%
+a2p2-dumb-003-x2          PASS  worst share 65.7%
+a2p2-grid-006-x0.5        PASS  worst share 76.8%
+a2p2-grid-006-x0.75       PASS  worst share 73.1%
+a2p2-grid-006-x1          PASS  worst share 72.8%
+a2p2-grid-006-x1.25       PASS  worst share 84.8%
+a2p2-grid-006-x1.5        PASS  worst share 83.2%
+a2p2-grid-006-x2          PASS  worst share 86.1%
+Required runs: all passed
+
+Final artifact rebuilt after style cleanup: all 30 runs rechecked and passed.

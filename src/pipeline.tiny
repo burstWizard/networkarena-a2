@@ -1,0 +1,47 @@
+# Five stages: control, customer queue, ingress path tag, tagged route, ACK route.
+# custom0 carries the path version. m3 is the tag selected at the source.
+stage alu=4 mem=1
+    load r0, ip_proto
+    table t1, r0 -> m0
+stage alu=4 mem=1
+    load r0, ip_src
+    table t2, r0 -> m1
+stage alu=8 mem=1
+    load r0, kind
+    const r1, 4
+    eq r2, r0, r1
+    bif r2 -> 17
+    load r0, custom0
+    const r1, 0
+    eq r2, r0, r1
+    bif r2 -> 10
+    const r2, 1
+    bif r2 -> 17
+    load r0, ip_src
+    table t4, r0 -> m2
+    loadm r0, m3
+    const r1, 0
+    eq r2, r0, r1
+    bif r2 -> 17
+    store custom0, r0
+    noop
+stage alu=4 mem=1
+    load r0, custom0
+    table t5, r0 -> m4
+stage alu=6 mem=1
+    load r0, custom0
+    const r1, 0
+    eq r2, r0, r1
+    bif r2 -> 6
+    const r2, 1
+    bif r2 -> 15
+    load r0, kind
+    const r1, 4
+    eq r2, r0, r1
+    bif r2 -> 11
+    punt 100
+    queue 0
+    load r0, ip_dst
+    table t3, r0 -> m5
+    noop
+    noop

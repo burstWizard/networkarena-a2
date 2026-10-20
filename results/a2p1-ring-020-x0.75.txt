@@ -1,0 +1,131 @@
+world 'a2p1-ring-020': 10 switches, 14 links, 10 apps, ran 40000 ms
+  app 100  sent      0  received  15029
+  app 101  sent  16420  received      0
+  app 102  sent      0  received  45622
+  app 103  sent      0  received      0
+  app 104  sent      0  received  16296
+  app 105  sent      0  received      0
+  app 106  sent  10879  received  11063
+  app 107  sent  48677  received      0
+  app 108  sent  15358  received      0
+  app 109  sent  11141  received  10791
+  total: sent 102475, received 98801 (96.41%)
+
+====================================================================================================
+ REPORT CARD   a2p1-ring-020   (Assignment 2, Part 1)                                  RESULT: PASS
+====================================================================================================
+ program      fair_switch.wasm
+ load         x0.75
+ run          40 s; graded from 1 s, in 38 windows of 1 s
+ not graded   the 2 s after an Amazon burst begins, and a window with a part of a burst
+ fair share   on the path that each customer's packets took
+ seconds      "second 3" is the window that starts 3 s into the run
+
+ FLOORS
+ --------------------------------------------------------------------------------------------------
+    floor                      result  worst   needs   where
+ F1 per-customer throughput    PASS      93%   >= 40%  app 107 (steam), second 13
+ F2 total throughput           PASS      95%   >= 55%  second 13
+ F3 no false link-down         PASS        0   0
+ -- collapse                   n/a         -   -       no bottleneck was overloaded
+ A1 no loops                   PASS        0   0
+ A1 no starvation              PASS      5/5   all
+ --------------------------------------------------------------------------------------------------
+ OVERALL  PASS
+
+ CUSTOMERS   (whole run; goodput is first-time data)
+ --------------------------------------------------------------------------------------------------
+   app  customer     rule           asks  goodput  worst     sent  resent     p50     p99    loss
+                                 Mbit/s   Mbit/s  share     pkts    pkts      ms      ms
+   101  netflix      AIMD           3.38     3.34   100%    15868      35     4.4     4.4    0.0%
+   106  fortnite     AIMD           0.45     0.44   100%    10510      28     1.3     1.3    0.0%
+   107  steam        rate match no limit     9.25    93%    46246    2318    10.5    11.2       -
+   108  amazon       rate match     5.25     3.03   100%    14439     128     6.5     6.5    0.0%
+   109  fortnite     AIMD           0.45     0.45   100%    10688       0     1.7     2.1    0.0%
+ --------------------------------------------------------------------------------------------------
+   asks         the largest rate the customer asks for in a window, at this load
+   worst share  the worst graded window, as % of the fair share (F1 needs 40%)
+   p50, p99     one-way delay in the worst window; not graded
+   loss         the worst graded window; not graded; "-" = the customer is held below
+                what it asks for, so loss is expected
+
+ FAIR SHARE BY SECOND   (% of fair share;  . = not graded;  ! = under the 40% floor)
+ --------------------------------------------------------------------------------------------------
+   second   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20
+   101      .   . 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100   .   .   .
+   106      .   . 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100   .   .   .
+   107      .   .  99  94  99  98  96  99  94  99  94  99  93  99  94  99  94   .   .   .
+   108      .   . 100 100 100 100 100 100 100   .   .   .   .   .   .   .   .   .   .   .
+   109      .   . 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100   .   .   .
+   total    .   . 100  97  99  99  98  99  97  99  96  99  95  99  96  99  96   .   .   .
+
+   second  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35  36  37  38
+   101    100 100 100 100 100 100 100 100 100 100 100 100 100 100 100   .   .   .
+   106    100 100 100 100 100 100 100 100 100 100 100 100 100 100 100   .   .   .
+   107     99  94  99  94  99  94  99  94  99  94  99  98  95  99  94   .   .   .
+   108    100 100 100 100 100 100 100   .   .   .   .   .   .   .   .   .   .   .
+   109    100 100 100 100 100 100 100 100 100 100 100 100 100 100 100   .   .   .
+   total   99  97 100  97  99  97  99  96  99  96  99  99  97  99  96   .   .   .
+
+   total = all graded customers together, as % of the fair total (F2 needs 55%)
+
+ BOTTLENECKS   (the links that the world names; % of capacity)
+ --------------------------------------------------------------------------------------------------
+   link      capacity   overloaded   first-time data    duplicates   all traffic
+                                       mean    worst          mean          mean
+   7->4         6 Mb/s     0 of 38        56%       -            0%           56%
+   4->7         6 Mb/s     0 of 38         0%       -            0%            0%
+   overloaded = windows in which the customers asked for more than the link carries;
+   worst = the lowest first-time data in an overloaded window
+
+ LINK LOAD BY SECOND   (all traffic, % of capacity;  * = a bottleneck that the world names)
+ --------------------------------------------------------------------------------------------------
+   second            1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20
+   9->6    10 Mb/s 100  96 100  96 100  98  97 100  95 100  96 100  95 100  95 100  95 100 100  95
+   7->5    10 Mb/s 100  94 100  94 100  98  97 100  94 100  95 100  94 100  94 100  94 100 100  95
+   5->9    10 Mb/s 100  94 100  94 100  98  96 100  94 100  94 100  94 100  94 100  94 100 100  94
+   6->2    10 Mb/s  95  90  95  90  95  93  92  95  90  95  90  95  89  95  90  95  90  95  95  90
+   7->4  *  6 Mb/s  34  56  56  56  56  56  56  56  56  56  56  56  56  56  56  56  56  56  56  56
+   9->3    10 Mb/s  48  53  53  53  53  53  53  53  53  32   0   0   0   0   0   0   0  21  53  53
+   4->0    10 Mb/s  47  53  53  53  53  53  53  53  53  32   0   0   0   0   0   0   0  21  53  53
+   3->4    10 Mb/s  47  53  53  53  53  53  53  53  53  32   0   0   0   0   0   0   0  21  53  53
+   8->9    10 Mb/s  48  53  53  53  53  53  53  53  53  32   0   0   0   0   0   0   0  21  53  53
+   4->7  *  6 Mb/s   8   8   9   8   9   9   8   9   8   9   8   9   8   9   8   9   8   9   9   8
+
+   second           21  22  23  24  25  26  27  28  29  30  31  32  33  34  35  36  37  38
+   9->6    10 Mb/s 100  95 100  95 100  95 100  96 100  95 100  99  96 100  95 100  95 100
+   7->5    10 Mb/s 100  94 100  94 100  94 100  94 100  94 100  98  96 100  94 100  94 100
+   5->9    10 Mb/s 100  94 100  94 100  94 100  95 100  94 100  99  96 100  94 100  94 100
+   6->2    10 Mb/s  95  90  95  90  95  90  95  90  95  90  95  94  91  95  90  95  90  95
+   7->4  *  6 Mb/s  56  56  56  56  56  56  56  56  56  56  56  56  56  56  56  56  56  56
+   9->3    10 Mb/s  53  53  53  53  53  53  53  32   0   0   0   0   0   0   0  21  53  53
+   4->0    10 Mb/s  53  53  53  53  53  53  53  32   0   0   0   0   0   0   0  21  53  53
+   3->4    10 Mb/s  53  53  53  53  53  53  53  32   0   0   0   0   0   0   0  21  53  53
+   8->9    10 Mb/s  53  53  53  53  53  53  53  32   0   0   0   0   0   0   0  21  53  53
+   4->7  *  6 Mb/s   9   8   9   8   9   8   9   8   9   8   9   9   8   9   8   9   8   9
+
+   18 other link directions never passed 50% (all are in the JSON)
+
+ WHERE CUSTOMER PACKETS STOPPED
+ --------------------------------------------------------------------------------------------------
+       2386  dropped by program
+
+ BELIEF vs TRUTH
+ --------------------------------------------------------------------------------------------------
+   t=      2 ms  switch  0 port 100: declared up    truth: up
+   t=      2 ms  switch  1 port 100: declared up    truth: up
+   t=      2 ms  switch  2 port 100: declared up    truth: up
+   t=      2 ms  switch  3 port 100: declared up    truth: up
+   t=      2 ms  switch  4 port 100: declared up    truth: up
+   t=      2 ms  switch  5 port 100: declared up    truth: up
+   t=      2 ms  switch  6 port 100: declared up    truth: up
+   t=      2 ms  switch  7 port 100: declared up    truth: up
+   t=      2 ms  switch  8 port 100: declared up    truth: up
+   t=      2 ms  switch  9 port 100: declared up    truth: up
+   t=      4 ms  switch  4 port   0: declared up    truth: up
+   t=      4 ms  switch  8 port   0: declared up    truth: up
+   ... and 26 more
+
+ More data:  --json FILE   every number above for each window, and buffer use
+             --log FILE    every packet event; open it in the viewer
+====================================================================================================
